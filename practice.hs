@@ -49,3 +49,10 @@ compress' (x:xs) prev
 compress2' :: String -> String
 compress2' "" = ""
 compress2' (x:xs) = [x] ++ compress2' (dropWhile (== x) xs)
+
+-- Just wanted to try writing dropWhile on my own.
+dropWhile' :: (Char -> Bool) -> String -> String
+dropWhile' f "" = ""
+dropWhile' f list@(x:xs)
+  | (f x) = dropWhile' f xs
+  | otherwise = list

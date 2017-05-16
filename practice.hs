@@ -56,3 +56,34 @@ dropWhile' f "" = ""
 dropWhile' f list@(x:xs)
   | (f x) = dropWhile' f xs
   | otherwise = list
+
+
+runLength' :: String -> [(Char, Int)]
+runLength' "" = []
+runLength' list@(x:_) = [(x, length (takeWhile (== x) list))] ++ runLength' (dropWhile (== x) list)
+
+take' :: Int -> [b] -> [b]
+take' 0 xs = []
+take' n (x:xs) = x:(take' (n - 1) xs) 
+
+repeat' :: a -> [a]
+repeat' x = x:repeat' x
+
+zip' :: [a] -> [b] -> [(a, b)]
+zip' [] _ = []
+zip' _ [] = []
+zip' (a:as) (b:bs) = (a, b):zip' as bs
+
+elem' :: (Eq a) => a -> [a] -> Bool
+elem' n [] = False
+elem' n (x:xs)
+  | (n == x) = True
+  | otherwise = elem' n xs
+
+quicksort :: (Ord a) => [a] => [a]
+quicksort [] = []
+quicksort (x:xs) =
+  let smaller = quicksort [a | a <- xs, a <= x]
+      larger = quicksort [a | a <- xs, a > x]
+  in smaller ++ [x] ++ larger
+

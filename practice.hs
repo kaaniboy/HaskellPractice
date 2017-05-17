@@ -87,3 +87,38 @@ quicksort (x:xs) =
       larger = quicksort [a | a <- xs, a > x]
   in smaller ++ [x] ++ larger
 
+
+foldMap :: (a -> b) -> [a] -> [b]
+foldMap f = foldr (\x acc -> f x:acc) []
+
+dupli :: [a] -> [a]
+dupli = foldr (\x acc -> [x, x] ++ acc) []
+
+dupli' :: [a] -> [a]
+dupli' xs = concat [[x, x] | x <- xs]
+
+repli :: [a] -> Int -> [a]
+repli xs n = concat [take n $ repeat x | x <- xs]
+
+rotate :: [a] -> Int -> [a]
+rotate [] _ = []
+rotate xs 0 = xs
+rotate xs n = rotate (tail xs ++ [head xs]) (n - 1)
+
+remove_at :: [a] -> Int -> [a]
+remove_at [] k = []
+remove_at (x:xs) k
+  | (k == 0) = xs
+  | otherwise = x:remove_at xs (k - 1)
+
+insert_at :: a -> [a] -> Int -> [a]
+insert_at e (x:xs) n
+  | (n == 1) = x:(e:xs)
+  | otherwise = x:insert_at e xs (n - 1)
+
+insert_at' :: a -> [a] -> Int -> [a]
+insert_at' e xs n
+  | (n >= length xs) = error "Provided index is too large."
+  | otherwise = let start = fst $ splitAt n xs
+                    end   = snd $ splitAt n xs
+                    in start ++ [e] ++ end

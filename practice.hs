@@ -1,3 +1,5 @@
+import System.Random
+
 -- Question #1
 last' :: [a] -> a
 last' [x] = x
@@ -122,3 +124,13 @@ insert_at' e xs n
   | otherwise = let start = fst $ splitAt n xs
                     end   = snd $ splitAt n xs
                     in start ++ [e] ++ end
+
+rnd_select :: [a] -> Int -> [a]
+rnd_select xs n = map ((!!) xs) $ take n $ randomRs (0, length xs) (mkStdGen 12)
+
+rnd_perm :: [a] -> StdGen -> [a]
+rnd_perm [] _ = []
+rnd_perm (x:[]) _ = [x]
+rnd_perm xs gen = let index = fst $ randomR (0, length xs - 1) gen
+                      (front, back) = splitAt index xs
+                  in (xs !! index):(rnd_perm (front ++ (tail back)) gen)
